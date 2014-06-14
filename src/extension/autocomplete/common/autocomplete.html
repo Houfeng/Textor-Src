@@ -1,0 +1,7 @@
+<ul>
+	<% var list = this; %>
+	<% for(var i in list){ %>
+	<% var item=list[i]; %>
+	<li class='item <%$(i==0 ? "selected" : "")%>' data-index='<%= i %>'><%= item %></li>
+	<% } %>
+</ul>

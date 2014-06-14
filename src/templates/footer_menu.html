@@ -1,0 +1,9 @@
+<ul id="footer-menu">
+	<% var footer=this.footer; %>
+	<% $.each(footer.items,function(i,item){ %>
+	<li class="<%= (footer.state && footer.state[item.id]==true) ? 'selected' : '' %>" data-event="click>!openFooter:<%= item.id %>" >
+		<%= item.text %>
+	</li>
+	<% }); %>
+	<li id="footer-close" data-event="click>!closeFooter"><i class="icon-remove"></i></li>
+</ul>

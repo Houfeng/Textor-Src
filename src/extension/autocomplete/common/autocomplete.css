@@ -1,0 +1,14 @@
+/*自动完成*/
+.autocomplete{color: #333;font-family:'Source Code Regular','Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', 'monospace' !important;font-size:13px;font-weight: normal;position: absolute;z-index: 101;background: rgba(245, 245, 245, 0.95);padding: 3px 0px;box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.6);border-radius: 1px;border-top: solid 1px #ddd;max-height: 208px !important;overflow-x:hidden;overflow-y:auto;}
+.autocomplete ul li{padding:1px 5px 2px 5px; white-space:nowrap; height:20px;}
+.autocomplete ul li b{color: orange;}
+.autocomplete ul li.selected{background: #3f4955; color:#ddd;}
+/*滚动条*/
+.autocomplete::-webkit-scrollbar{background:rgba(200,200,200,0.1); width: 2px; height: 2px;}
+.autocomplete::-webkit-scrollbar-track{background:rgba(200,200,200,0.1);}
+.autocomplete::-webkit-scrollbar-thumb{border: solid 1px #aaa; background: rgba(200,200,200,0.95);}
+.autocomplete::-webkit-scrollbar-thumb:window-inactive{background: rgba(200,200,200,0.95);}
+.autocomplete::-webkit-scrollbar-thumb:vertical:hover{background-color: rgba(200,200,200,1);}
+.autocomplete::-webkit-scrollbar-thumb:vertical:active{background-color: rgba(200,200,200,1);}
+.autocomplete::-webkit-scrollbar-thumb:horizontal:hover{background-color: rgba(200,200,200,1);}
+.autocomplete::-webkit-scrollbar-thumb:horizontal:active{background-color: rgba(200,200,200,1);}

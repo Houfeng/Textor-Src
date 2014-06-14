@@ -1,0 +1,11 @@
+<ul>
+	<% var command=this.command; %>
+	<% $.each(command.findResult,function(i,item){ %>
+	<li data-event='dblclick>execCommand:<%= i %>' class="<%= (command.selectedIndex==i ? 'selected' : '') %>">
+	    <%= $.self.highlight(null,item.name,command.keyword) %> 
+	    <% if(item.key){ %>
+	    [<%= item.key %>]
+	    <% } %>
+	</li>
+	<% }); %>
+</ul>

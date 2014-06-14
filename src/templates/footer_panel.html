@@ -1,0 +1,8 @@
+<div id="footer-panel">
+	<% var footer=this.footer; var current = footer.current; %>
+	<% if(current && current.id && current.uri){ %>
+	<link id="footerPanel_<%= current.id %>" data-role='view' data-view="<%= current.uri %>">	
+	<% } else if(current && current.id){ %>
+	<link id="footerPanel_<%= current.id %>" data-role='view' data-view="self/views/<%= current.id %>.js">	
+	<% } %>
+</div>

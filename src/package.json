@@ -1,0 +1,25 @@
+{                          
+    "name" : "Textor" ,                               
+    "description" : "This is a very cool text editor." ,        
+    "version" : "0.5.4" , 
+    "style": "default",
+    "language": "en-us",
+    "splash":"/splash",
+    "index": "/main",                        
+    "keywords" : ["Textor","Editor","Coding","Houfeng"], 
+    "main" : "index.html" ,  
+    "site":"http://textor.houfeng.net",      
+    "window" : {    
+        "title": "Textor",           
+        "icon" : "images/app.png" ,                       
+        "toolbar" : false ,  
+        "menubar":false,                           
+        "width" : 960, 
+        "height" : 520,
+        "min_width":860,                              
+        "min_height":480,
+        "frame" : true,
+        "show":false,
+        "kiosk":false
+    }
+}

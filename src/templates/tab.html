@@ -1,0 +1,18 @@
+<div id="tab-area">
+	<% 
+		var model = this.file;
+		var openFiles = model.openFiles; 
+		var cols=[];
+		$.each(openFiles,function(i,file){
+			cols.push('*');
+		});
+		cols=cols.join(',');
+	%>
+	<ul data-role='grid' data-grid-rows='*' data-grid-cols='<%= cols %>' >
+	<% $.each(openFiles,function(path,item){ %>
+		<li data-event='click>$openFile' title='<%= path %>' path='<%= path %>' class="<%= (path==model.currentFile.path ? 'selected' : '') %>" data-role='cell' >
+			<%= item.name %><i data-event='click>$closeFile' class='close-button icon-remove'></i>
+		</li>
+	<% }); %>
+	</ul>
+</div>

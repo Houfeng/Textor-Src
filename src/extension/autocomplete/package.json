@@ -1,0 +1,6 @@
+{
+    "id":"__autocomplete__",
+	"name":"自动完成",
+	"summary":"自动提示插件",
+	"main":"main"
+}

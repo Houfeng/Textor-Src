@@ -1,0 +1,29 @@
+{
+    //editor options
+    "editor" : {
+        "font_size" : 0,
+        "tab_size" : 0,
+        //light or dark
+        "theme" : "" 
+    },
+    
+    //bind the user customize the shortcut key
+    "key_binding" : {
+    },
+    
+    //environment Options
+    "environment" : {
+        "path" : []
+    },
+    
+    //child process optinos 
+    "child_process" : {
+        "encoding" : "",
+        "max_buffer" : 0
+    },
+    
+    //console optinos
+    "console" : {
+        "max_buffer" : 0
+    }
+}

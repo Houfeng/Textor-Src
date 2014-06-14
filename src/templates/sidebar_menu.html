@@ -1,0 +1,10 @@
+<ul id="sidebar-menu">
+	<% var sidebar=this.sidebar; %>
+	<% $.each(sidebar.items,function(i,item){ %>
+	<li class="<%= (sidebar.state && sidebar.state[item.id]==true) ? 'selected' : '' %>" data-event="click>!toggleSidebar:<%= item.id %>" >
+		<% for(var i=item.text.length-1;i>=0;i--){ %>
+		<span><%= item.text[i] %></span>
+		<% } %>
+	</li>
+	<% }); %>
+</ul>

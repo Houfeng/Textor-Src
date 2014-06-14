@@ -1,0 +1,9 @@
+<div id="command-panel">
+	<% var command=this.command; %>
+	<div class="head">
+		<input data-event='keyup>!input' id='command-box' placeholder='<%= $.lang.find_command %>' value="<%= command.keyword %>" type="text">
+	</div>
+	<div class="body">
+		<link id="commandList" data-role='view' data-view="../views/command_list.js">
+	</div>
+</div>

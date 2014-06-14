@@ -1,0 +1,9 @@
+{
+    "inDir":"./src",
+    "outDir":"./build",
+    "ignoreList":[
+        "lib",
+        "node_modules",
+        "styles"
+    ]
+}

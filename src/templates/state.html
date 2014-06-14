@@ -1,0 +1,22 @@
+<div id="state-area">
+	<% 
+		var fileMgr = this.file || {};
+		var currentFile = fileMgr.currentFile; 
+	%>
+	<%
+	    if(currentFile){
+		    var cursor = currentFile.cursor || {};
+		    cursor.row = cursor.row || 0;
+		    cursor.column = cursor.column || 0;
+	%>
+        	<span class='edit-info'>
+        		<%= $.lang.row %>: <%= cursor.row+1 %> , 
+        		<%= $.lang.col %>: <%= cursor.column+1 %> , 
+        		<%= $.lang.encoding %>: <%= currentFile.encoding || $.lang.unknown %> , 
+        		<%= $.lang.mode %>: <label data-event='click>switchMode'><%= currentFile.mode || $.lang.unknown %></label>
+        	</span>
+        	<span class='mode-info'>
+        		<%= $.lang.state %>: <%= currentFile.state==1 ? $.lang.editing : $.lang.saved %>
+        	</span>
+    <% } %>
+</div>

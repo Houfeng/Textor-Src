@@ -1,0 +1,20 @@
+<div id="find-panel">
+    <div class='line-area'>
+        <input type="text" id="findBox" data-event='keyup>!findTextInput'>
+        <div class='button-area'>
+            <input type="button" value="<%= $.lang.find %>" id="findButton" data-event='click>!find'>
+            <input type="button" value="<%= $.lang.find_all %>" id="findAllButton" data-event='click>!findAll'>
+        </div>
+    </div>
+    <div class='line-area'>
+        <input type="text" id="replaceBox">
+        <div class='button-area'>
+            <input type="button" value="<%= $.lang.replace %>" id='replaceButton' data-event='click>!replace'>
+            <input type="button" value="<%= $.lang.replace_all %>" id='replaceAllButton' data-event='click>!replaceAll'>
+        </div>
+    </div>
+    <div style='display:none;' class='line-area'>
+        <input type="checkbox" name="" id="ignoreCaseBox">
+        <label for="ignoreCaseBox">Ignore Case</label>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<div class='ui-alert'>
+    <% var model = this; %>
+	<div class='ui-alert-inner'>
+		<header><%= model.title %></header>
+		<section>
+			<% if(!$.isNull(model.input)){ %>
+				<input type="text" value='<%= model.input %>'>
+			<% } else if(!$.isNull(model.items)){ %>
+			    <select>
+			    <option value=''><%= $.lang.please_select %></option>
+			    <% $.each(model.items,function(i,item){ %>
+			        <option value='<%= item.value %>'><%= item.text %></option>
+			    <% }); %>
+			    </select>
+			<% } else { %>
+				<%= model.text %>
+			<% } %>
+		</section>
+		<footer>
+			<% $.each(model.buttons,function(i,item){ %>
+				<button class='<%= model.selectedIndex==i?"selected":"" %>' data-event='click>!hide:<%= i %>'><%= item %></button>
+			<% }); %>
+		</footer>
+	</div>
+</div>

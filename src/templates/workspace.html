@@ -1,0 +1,59 @@
+<div id="workspace-panel">
+	<div class="head">
+		<a data-event="click>pickFolder"><%= $.lang.folder %></a> | 
+		<a data-event="click>pickFile"><%= $.lang.file %></a> | 
+		<a data-event="click>createBlankFile"><%= $.lang.new %></a> |
+		<a data-event="click>setShowType:recent"><%= $.lang.recent %></a> |
+		<a data-event="click>$clearWorkspace"><%= $.lang.clear %></a> 
+	</div>
+	<div class="body">
+		<% var fileMgr=this.file;
+		   var currentFile = fileMgr.currentFile ||{};
+		%>
+		<% function create(list){ %>
+			<ul class='easy_tree'>
+			<% $.each(list,function(i,item){ %>
+				<li class='<% if(item.type=="dir"){ $(fileMgr.dirState[item.path] ? "node_open" : "node_close")} %>' 
+					isroot='<%= item.isRoot%>' 
+					type='<%= item.type %>' 
+					path='<%= item.path %>' 
+					root='<%= item.root.path %>'
+					> 
+					<a class='node_handler<%= item.type=="dir" ? "" : "_ph" %>'>
+						<i class='icon-caret-right'></i>
+						<i class='icon-caret-down'></i>
+					</a>
+					<% if(item.type=='dir'){ %>
+						<span class="node_handler item-dir" 
+							  data-event="contextmenu>!onContextMenu:dir" >
+						<%= item.name %>
+						</span>
+						<%= create(item.children) %>
+					<% }else{ %>
+						<span class="<%= currentFile.path==item.path ? 'selected' : '' %> item-file"
+							  data-event="click>$openFile;contextmenu>!onContextMenu:file" >
+						<%= item.name %>
+						</span>
+					<% } %>
+				</li>
+			<% }); %>
+			</ul>
+		<% } %>
+		<% if(fileMgr.showType=='recent'){ %>
+			<ul class='recent-list'>
+				<li class='back' data-event='click>setShowType:finder'>
+					<%= $.lang.back %>
+				</li>
+			<% $.each(fileMgr.recentInfo,function(i,item){ %>
+				<li data-event="click>chooseRecent:<%= i %>" 
+					title='<%= item.path %>'>
+					<%= item.type=="dir" ? $.lang.folder : $.lang.file %>:
+					<%= item.name %>
+				</li>
+			<% }); %>
+			</ul>
+		<% }else{ %>
+			<% create(fileMgr.currentInfo) %>
+		<% } %>
+	</div>
+</div>

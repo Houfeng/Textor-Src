@@ -1,0 +1,8 @@
+<div id="sidebar-panel">
+	<% var sidebar=this.sidebar; var current = sidebar.current; %>
+	<% if(current && current.id && current.uri){ %>
+	<link id="sidebarPanel_<%= current.id %>" data-role='view' data-view="<%= current.uri %>">	
+	<% } else if(current && current.id){ %>
+	<link id="sidebarPanel_<%= current.id %>" data-role='view' data-view="self/views/<%= current.id %>.js">	
+	<% } %>
+</div>

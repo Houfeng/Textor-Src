@@ -1,0 +1,7 @@
+#find-panel{padding:10px;}
+#find-panel input {font-size: 13px; min-width:91px; }
+#find-panel .line-area {padding-right:190px;position:relative;margin-bottom:5px; }
+#find-panel .line-area input[type='text']{ width: 100%;}
+#find-panel .line-area .button-area { position:absolute;width:190px;top:0px;right:0px;text-align:right; }
+#find-panel .line-area .button-area input[type='button']{color: #777; background:#333;}
+#find-panel .line-area input[type='checkbox']{ background:#aaa; appearance:checkbox !important; -webkit-appearance:checkbox !important; min-width:auto; }
