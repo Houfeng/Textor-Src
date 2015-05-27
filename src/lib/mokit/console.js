@@ -1,1 +1,61 @@
-/*csd*/define(function(require,exports,module){"use strict";var e=require("./utils");var d="[mokit] ";exports.enabled=true;exports.useDebugger=true;var a=null;var c=function(){if(!a){var f=null;var g=function(i,j,h){if(!f){f=window.open("about:blank","__console","width=600,height=300");}f.document.title="console";h=h||"#000";f.document.write('<strong style="color:'+h+';">['+j+']</strong><div style="margin-bottom:8px;">'+i+"</div>");f.document.body.scrollTop=f.document.body.offsetHeight;};a={log:function(h){g(h,"log","black");},error:function(h){g(h,"error","red");},info:function(h){g(h,"info","blue");},warn:function(h){g(h,"warn","orange");}};}return a;};var b=function(){if(window.console&&exports.useDebugger){return window.console;}else{return c();}};exports.log=function(f){if(exports.enabled){b().log(d+f);}};exports.error=function(f){if(exports.enabled){b().error(d+f);}};exports.info=function(f){if(exports.enabled){b().info(d+f);}};exports.warn=function(f){if(exports.enabled){b().warn(d+f);}};});
+/**
+ * 调式控制台
+ * @class Console
+ * @module mokit
+ */
+define(function(require, exports, module) {
+    "require:nomunge,exports:nomunge,module:nomunge";
+    "use strict";
+
+    var utils = require('./utils');
+    var self = exports;
+
+    self.prefix = '[mokit] ';
+
+    /**
+     * 是否开启
+     * @property {Boolean} enabled
+     * @static
+     */
+    self.enabled = true;
+
+    /**
+     * 打印日志信息
+     * @method log
+     * @param {String} msg 信息
+     * @static
+     */
+    self.log = function(msg) {
+        if (self.enabled) console.log(self.prefix + msg);
+    };
+
+    /**
+     * 打印错误信息
+     * @method error
+     * @param {String} msg 信息
+     * @static
+     */
+    self.error = function(msg) {
+        if (self.enabled) console.error(self.prefix + msg);
+    };
+
+    /**
+     * 打印信息
+     * @method info
+     * @param {String} msg 信息
+     * @static
+     */
+    self.info = function(msg) {
+        if (self.enabled) console.info(self.prefix + msg);
+    };
+
+    /**
+     * 打印警告信息
+     * @method warn
+     * @param {String} msg 信息
+     * @static
+     */
+    self.warn = function(msg) {
+        if (self.enabled) console.warn(self.prefix + msg);
+    };
+});

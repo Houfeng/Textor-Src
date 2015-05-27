@@ -1,1 +1,23 @@
-/*csd*/define(function(require,exports,module){"use strict";return(function(){var c,e,b,a,d;c=/^[^{]+\{([\s\S]*)\}$/;e=window.URL||window.webkitURL;b={type:"text/javascript; charset=utf-8"};return function(f){a=f.toString().match(c)[1];d=window.opera?"data:application/javascript,"+encodeURIComponent(a):e.createObjectURL(new Blob([a],b));return new Worker(d);};})();});
+/**
+ * 工作线程
+ */
+define(function(require, exports, module) {
+    "require:nomunge,exports:nomunge,module:nomunge";
+    "use strict";
+
+    return (function() {
+        var functionBodyRegx, URL, contentType, code, url;
+        functionBodyRegx = /^[^{]+\{([\s\S]*)\}$/;
+        URL = window.URL || window.webkitURL;
+        contentType = {
+            type: "text/javascript; charset=utf-8"
+        };
+        return function(fn) {
+            code = fn.toString().match(functionBodyRegx)[1];
+            url = window.opera ?
+                "data:application/javascript," + encodeURIComponent(code) :
+                URL.createObjectURL(new Blob([code], contentType));
+            return new Worker(url);
+        }
+    })();
+});

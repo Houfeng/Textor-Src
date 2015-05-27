@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     var buffer = "";
     var lastInfo = "";
 
-    self.change = $event.create(self, 'change');
+    $event.use(self);
 
     self.bufferSize = usrCfg.console.max_buffer || 100000;
 
@@ -32,7 +32,7 @@ define(function(require, exports, module) {
     self.clear = function() {
         process.nextTick(function() {
             buffer = "";
-            self.change.trigger();
+           self.call('change');
         });
     };
 
@@ -54,7 +54,7 @@ define(function(require, exports, module) {
             var cutIndex = buffer.length - self.bufferSize;
             if (cutIndex < 0) cutIndex = 0;
             buffer = buffer.substr(cutIndex);
-            self.change.trigger();
+            self.call('change');
         });
     };
 

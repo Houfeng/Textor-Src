@@ -85,6 +85,12 @@ define(function(require, exports, module) {
                 context.controller.closeCurrentFile(context);
             }
         }, {
+            name: 'file:close',
+            key: cmdKey + '+w',
+            exec: function() {
+                context.controller.closeCurrentFile(context);
+            }
+        }, {
             name: 'file:pick file',
             key: cmdKey + '+shift+o',
             exec: function() {

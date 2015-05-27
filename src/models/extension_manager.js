@@ -75,8 +75,7 @@ define(function(require, exports, module) {
         return list ? list[0] : null;
     };
 
-    self.loadBegin = $event.create(self, 'loadBegin');
-    self.loadEnd = $event.create(self, 'loadEnd');
+    $event.use(self);
 
     var maxLoadTime = 5 * 1000; //指定时间不能完成加载的插件，直接丢弃
 
@@ -88,19 +87,19 @@ define(function(require, exports, module) {
             info = info || {};
             info.id = info.id || id; //参数中的id其实就是安装的目录名
             info.path = extPath;
-            info.name = info.name || item.id;
+            info.name = info.name || info.id;
             info.main = info.main || 'main';
             info.version = info.version || 'unknow';
             info.summary = info.summary || 'not found';
             info.type = type;
-            self.loadBegin.trigger(info);
+            self.call('loadBegin', info);
             //console.log('插件 "' + info.name + '" 加载开始.');
             require(extPath + info.main, function(ext) {
                 if (loaded === false && callback) {
                     ext.info = info || {};
                     self.extensions.push(ext);
                     //console.log('插件 "' + info.name + '" 加载完成.');
-                    self.loadEnd.trigger(info, ext);
+                    self.call('loadEnd', info);
                     loaded = true;
                     callback();
                 }
@@ -137,7 +136,7 @@ define(function(require, exports, module) {
             });
             task.end(callback);
         } catch (ex) {
-            //alert(ex.message);
+            alert("system extension error : " + ex.message);
             if (callback) callback();
         }
     };
@@ -184,6 +183,7 @@ define(function(require, exports, module) {
     };
 
     var wrapContext = function(context) {
+        context = context || {};
         context.platform = platform;
         context.isWin = isWin;
         context.cmdKey = (platform === 'darwin') ? 'command' : 'ctrl';
@@ -225,18 +225,18 @@ define(function(require, exports, module) {
             item.context = context;
         });
         //console.log("开始触发各插件 Ready 事件");
-        self.trigger('Ready', context, function() {
+        self.call('Ready', context, function() {
             //console.log("所有插件就序");
-            self.trigger('AllExtensionReady');
+            self.call('AllExtensionReady');
         });
     };
 
     self.render = function(context) {
         context = wrapContext(context);
-        self.trigger('Render', context);
+        self.call('Render', context);
     };
 
-    self.trigger = function(name, args, callback) {
+    self.call = function(name, args, callback) {
         var eventName = "on" + name;
         utils.async(function() {
             var task = Task.create();

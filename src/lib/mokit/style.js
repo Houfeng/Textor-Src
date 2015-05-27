@@ -1,1 +1,84 @@
-/*csd*/define(function(require,exports,module){"use strict";var a=require("./jquery"),e=require("./utils"),c=require("./store"),b=require("./event");var d=c.dataCache["$style"]={};exports.styleChange=b.create(exports,"styleChange");exports.storeKey="current-name";e.defineProperty(exports,"currentName",{get:function(){return c.local.get("style:"+exports.storeKey);},set:function(f){return c.local.set("style:"+exports.storeKey,f);}},true);exports.addStyle=function(g,f){e.each(g,function(h){d[h]=(f&&f.resovleUri)?f.resovleUri(this):this;});};exports.setStyle=function(g,f){if(!e.isString(g)){return f();}if(d[g]){module.unrequire(d[exports.currentName()]);require(d[g],function(h){exports.currentName(g);exports.styleChange.trigger(g,h);if(f){f(g,h);}});}else{console.error('style "'+g+'" not found.');}};});
+/**
+ * 风格主题管理模块
+ * @module mokit
+ * @class Style
+ */
+define(function(require, exports, module) {
+    "require:nomunge,exports:nomunge,module:nomunge";
+    "use strict";
+
+    var $ = require('./jquery');
+    var utils = require('./utils');
+    var store = require('./store');
+    var $event = require('./event');
+
+    var styleTable = store.dataCache["$style"] = {};
+
+    exports.events = $event.use(exports);
+
+    exports.storeKey = "mokit://style/current-name";
+    var currentName = null;
+    utils.defineProperty(exports, 'currentName', {
+        get: function() {
+            currentName = currentName || store.local.get('style:' + exports.storeKey);
+            return currentName;
+        },
+        set: function(name) {
+            currentName = name;
+            return currentName;
+            //return store.local.set('style:' + exports.storeKey, name);
+        }
+    }, true);
+
+    utils.defineProperty(exports, 'defaultName', {
+        get: function() {
+            return Object.getOwnPropertyNames(styleTable)[0];
+        }
+    }, true);
+
+    /**
+     * 添加风格
+     * @method addStyle
+     * @param {Object} styles 风格配置表
+     * @param {Module} srcModule 当前模块
+     * @static
+     */
+    exports.addStyle = function(styles, srcModule) {
+        utils.each(styles, function(name) {
+            styleTable[name] = (srcModule && srcModule.resovleUri) ? srcModule.resovleUri(this) : this;
+        });
+    };
+
+    /**
+     * 设置风格
+     * @method setStyle
+     * @param {String} name 设置当前风格
+     * @static
+     */
+    exports.setStyle = function(name, callback) {
+        if (!utils.isString(name)) return callback();
+        if (styleTable[name]) {
+            module.unload(styleTable[exports.currentName()]);
+            require(styleTable[name], function(rs) {
+                exports.currentName(name);
+                exports.events.call("change", {
+                    name: name,
+                    style: rs
+                });
+                utils.async(function() {
+                    if (callback) callback(name, rs);
+                }, 45);
+            });
+        } else {
+            console.error('style "' + name + '" not found.');
+        }
+    };
+
+    exports.save = function() {
+        return store.local.set(exports.storeKey, currentName);
+    };
+
+    exports.clear = function() {
+        return store.local.set(exports.storeKey, "");
+    };
+});

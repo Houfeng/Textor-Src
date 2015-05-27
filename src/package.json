@@ -1,7 +1,7 @@
 {                          
     "name" : "Textor" ,                               
     "description" : "This is a very cool text editor." ,        
-    "version" : "0.5.4" , 
+    "version" : "0.5.5" , 
     "style": "default",
     "language": "en-us",
     "splash":"/splash",

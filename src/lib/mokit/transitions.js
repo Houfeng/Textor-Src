@@ -1,1 +1,397 @@
-/*csd*/define(function(require,exports,module){"use strict";var a=require("./jquery"),n=require("./style.css"),j=require("./modernizr"),p=require("./utils"),i=require("./mask");var o=j.cssanimations,f=false,g=false;var e={"WebkitAnimation":"webkitAnimationEnd","OAnimation":"oAnimationEnd","msAnimation":"MSAnimationEnd","animation":"animationend"};var d=e[j.prefixed("animation")];var c=false;exports.isAnimating=function(){return c;};var l=function(q,r){if(q){q.attr("class",q.data("originalClassList"));}if(r){r.attr("class",r.data("originalClassList")+" ui-view-current");}};var m=function(q,r){if(q){q.data("originalClassList",q.attr("class")||"");}if(r){r.data("originalClassList",r.attr("class")||"");}};var k=function(r,s,q){f=false;g=false;l(r,s);if(q){q();}};var h=function(q){var s,r;switch(q){case 1:s="ui-view-moveToLeft";r="ui-view-moveFromRight";break;case 2:s="ui-view-moveToRight";r="ui-view-moveFromLeft";break;case 3:s="ui-view-moveToTop";r="ui-view-moveFromBottom";break;case 4:s="ui-view-moveToBottom";r="ui-view-moveFromTop";break;case 5:s="ui-view-fade";r="ui-view-moveFromRight ui-view-ontop";break;case 6:s="ui-view-fade";r="ui-view-moveFromLeft ui-view-ontop";break;case 7:s="ui-view-fade";r="ui-view-moveFromBottom ui-view-ontop";break;case 8:s="ui-view-fade";r="ui-view-moveFromTop ui-view-ontop";break;case 9:s="ui-view-moveToLeftFade";r="ui-view-moveFromRightFade";break;case 10:s="ui-view-moveToRightFade";r="ui-view-moveFromLeftFade";break;case 11:s="ui-view-moveToTopFade";r="ui-view-moveFromBottomFade";break;case 12:s="ui-view-moveToBottomFade";r="ui-view-moveFromTopFade";break;case 13:s="ui-view-moveToLeftEasing ui-view-ontop";r="ui-view-moveFromRight";break;case 14:s="ui-view-moveToRightEasing ui-view-ontop";r="ui-view-moveFromLeft";break;case 15:s="ui-view-moveToTopEasing ui-view-ontop";r="ui-view-moveFromBottom";break;case 16:s="ui-view-moveToBottomEasing ui-view-ontop";r="ui-view-moveFromTop";break;case 17:s="ui-view-scaleDown";r="ui-view-moveFromRight ui-view-ontop";break;case 18:s="ui-view-scaleDown";r="ui-view-moveFromLeft ui-view-ontop";break;case 19:s="ui-view-scaleDown";r="ui-view-moveFromBottom ui-view-ontop";break;case 20:s="ui-view-scaleDown";r="ui-view-moveFromTop ui-view-ontop";break;case 21:s="ui-view-scaleDown";r="ui-view-scaleUpDown ui-view-delay300";break;case 22:s="ui-view-scaleDownUp";r="ui-view-scaleUp ui-view-delay300";break;case 23:s="ui-view-moveToLeft ui-view-ontop";r="ui-view-scaleUp";break;case 24:s="ui-view-moveToRight ui-view-ontop";r="ui-view-scaleUp";break;case 25:s="ui-view-moveToTop ui-view-ontop";r="ui-view-scaleUp";break;case 26:s="ui-view-moveToBottom ui-view-ontop";r="ui-view-scaleUp";break;case 27:s="ui-view-scaleDownCenter";r="ui-view-scaleUpCenter ui-view-delay400";break;case 28:s="ui-view-rotateRightSideFirst";r="ui-view-moveFromRight ui-view-delay200 ui-view-ontop";break;case 29:s="ui-view-rotateLeftSideFirst";r="ui-view-moveFromLeft ui-view-delay200 ui-view-ontop";break;case 30:s="ui-view-rotateTopSideFirst";r="ui-view-moveFromTop ui-view-delay200 ui-view-ontop";break;case 31:s="ui-view-rotateBottomSideFirst";r="ui-view-moveFromBottom ui-view-delay200 ui-view-ontop";break;case 32:s="ui-view-flipOutRight";r="ui-view-flipInLeft ui-view-delay500";break;case 33:s="ui-view-flipOutLeft";r="ui-view-flipInRight ui-view-delay500";break;case 34:s="ui-view-flipOutTop";r="ui-view-flipInBottom ui-view-delay500";break;case 35:s="ui-view-flipOutBottom";r="ui-view-flipInTop ui-view-delay500";break;case 36:s="ui-view-rotateFall ui-view-ontop";r="ui-view-scaleUp";break;case 37:s="ui-view-rotateOutNewspaper";r="ui-view-rotateInNewspaper ui-view-delay500";break;case 38:s="ui-view-rotatePushLeft";r="ui-view-moveFromRight";break;case 39:s="ui-view-rotatePushRight";r="ui-view-moveFromLeft";break;case 40:s="ui-view-rotatePushTop";r="ui-view-moveFromBottom";break;case 41:s="ui-view-rotatePushBottom";r="ui-view-moveFromTop";break;case 42:s="ui-view-rotatePushLeft";r="ui-view-rotatePullRight ui-view-delay180";break;case 43:s="ui-view-rotatePushRight";r="ui-view-rotatePullLeft ui-view-delay180";break;case 44:s="ui-view-rotatePushTop";r="ui-view-rotatePullBottom ui-view-delay180";break;case 45:s="ui-view-rotatePushBottom";r="ui-view-rotatePullTop ui-view-delay180";break;case 46:s="ui-view-rotateFoldLeft";r="ui-view-moveFromRightFade";break;case 47:s="ui-view-rotateFoldRight";r="ui-view-moveFromLeftFade";break;case 48:s="ui-view-rotateFoldTop";r="ui-view-moveFromBottomFade";break;case 49:s="ui-view-rotateFoldBottom";r="ui-view-moveFromTopFade";break;case 50:s="ui-view-moveToRightFade";r="ui-view-rotateUnfoldLeft";break;case 51:s="ui-view-moveToLeftFade";r="ui-view-rotateUnfoldRight";break;case 52:s="ui-view-moveToBottomFade";r="ui-view-rotateUnfoldTop";break;case 53:s="ui-view-moveToTopFade";r="ui-view-rotateUnfoldBottom";break;case 54:s="ui-view-rotateRoomLeftOut ui-view-ontop";r="ui-view-rotateRoomLeftIn";break;case 55:s="ui-view-rotateRoomRightOut ui-view-ontop";r="ui-view-rotateRoomRightIn";break;case 56:s="ui-view-rotateRoomTopOut ui-view-ontop";r="ui-view-rotateRoomTopIn";break;case 57:s="ui-view-rotateRoomBottomOut ui-view-ontop";r="ui-view-rotateRoomBottomIn";break;case 58:s="ui-view-rotateCubeLeftOut ui-view-ontop";r="ui-view-rotateCubeLeftIn";break;case 59:s="ui-view-rotateCubeRightOut ui-view-ontop";r="ui-view-rotateCubeRightIn";break;case 60:s="ui-view-rotateCubeTopOut ui-view-ontop";r="ui-view-rotateCubeTopIn";break;case 61:s="ui-view-rotateCubeBottomOut ui-view-ontop";r="ui-view-rotateCubeBottomIn";break;case 62:s="ui-view-rotateCarouselLeftOut ui-view-ontop";r="ui-view-rotateCarouselLeftIn";break;case 63:s="ui-view-rotateCarouselRightOut ui-view-ontop";r="ui-view-rotateCarouselRightIn";break;case 64:s="ui-view-rotateCarouselTopOut ui-view-ontop";r="ui-view-rotateCarouselTopIn";break;case 65:s="ui-view-rotateCarouselBottomOut ui-view-ontop";r="ui-view-rotateCarouselBottomIn";break;case 66:s="ui-view-rotateSidesOut";r="ui-view-rotateSidesIn ui-view-delay200";break;case 67:s="ui-view-rotateSlideOut";r="ui-view-rotateSlideIn";break;case 68:s="ui-view-fade ui-view-ontop";r="ui-view-fade ui-view-delay200";break;}return{"inClass":r,"outClass":s};};var b=function(t,u,q,s){if(!t||!u||!q||q==0){setTimeout(function(){k(null,null,s);},13);return;}m(t,u);u.addClass("ui-view-current");var r=h(q);t.addClass(r.outClass).on(d,function(){t.off(d);f=true;if(g){k(t,u,s);}});u.addClass(r.inClass).on(d,function(){u.off(d);g=true;if(f){k(t,u,s);}});if(!o){k(t,u,s);}};exports.change=function(s,t,q,r,u){if(c){return;}c=true;i.begin(u);s=s.ui||s;t=t.ui||t;b(s,t,q,function(){i.end(u);if(r){r();}c=false;});};});
+/**
+ * 视图
+ * @module mokit
+ */
+define(function(require, exports, module) {
+    "require:nomunge,exports:nomunge,module:nomunge";
+    "use strict";
+
+    var $ = require('./jquery');
+    var modernizr = require('./modernizr');
+    var utils = require('./utils');
+    var mask = require('./mask');
+
+    var supportCSSAnimation = modernizr.cssanimations,
+        endCurrentView = false,
+        endNextView = false;
+
+    var animationEndEventNames = {
+        'WebkitAnimation': 'webkitAnimationEnd',
+        'OAnimation': 'oAnimationEnd',
+        'msAnimation': 'MSAnimationEnd',
+        'animation': 'animationend'
+    };
+    
+    // animation end event name
+    var animationEndEventName = animationEndEventNames[modernizr.prefixed('animation')];
+
+    var _isAnimating = false;
+    exports.isAnimating = function() {
+        return _isAnimating;
+    };
+
+    /**
+     * 恢复原有样式
+     */
+    var resetViewClass = function(currentView, nextView) {
+        if (currentView) currentView.attr('class', currentView.data('originalClassList'));
+        if (nextView) nextView.attr('class', nextView.data('originalClassList') + ' ui-view-current');
+    };
+
+    /**
+     * 保存原有样式
+     */
+    var saveViewClass = function(currentView, nextView) {
+        if (currentView) currentView.data('originalClassList', currentView.attr('class') || '');
+        if (nextView) nextView.data('originalClassList', nextView.attr('class') || '');
+    };
+
+    /**
+     * 在动画结束时
+     */
+    var onEndAnimation = function(currentView, nextView, callback) {
+        endCurrentView = false;
+        endNextView = false;
+        resetViewClass(currentView, nextView);
+        if (callback) callback();
+    };
+
+    /**
+     * 取动画样式类名
+     */
+    var getAnimationClass = function(animation) {
+        var outClass, inClass;
+        switch (animation) {
+            case 1:
+                outClass = 'ui-view-moveToLeft';
+                inClass = 'ui-view-moveFromRight';
+                break;
+            case 2:
+                outClass = 'ui-view-moveToRight';
+                inClass = 'ui-view-moveFromLeft';
+                break;
+            case 3:
+                outClass = 'ui-view-moveToTop';
+                inClass = 'ui-view-moveFromBottom';
+                break;
+            case 4:
+                outClass = 'ui-view-moveToBottom';
+                inClass = 'ui-view-moveFromTop';
+                break;
+            case 5:
+                outClass = 'ui-view-fade';
+                inClass = 'ui-view-moveFromRight ui-view-ontop';
+                break;
+            case 6:
+                outClass = 'ui-view-fade';
+                inClass = 'ui-view-moveFromLeft ui-view-ontop';
+                break;
+            case 7:
+                outClass = 'ui-view-fade';
+                inClass = 'ui-view-moveFromBottom ui-view-ontop';
+                break;
+            case 8:
+                outClass = 'ui-view-fade';
+                inClass = 'ui-view-moveFromTop ui-view-ontop';
+                break;
+            case 9:
+                outClass = 'ui-view-moveToLeftFade';
+                inClass = 'ui-view-moveFromRightFade';
+                break;
+            case 10:
+                outClass = 'ui-view-moveToRightFade';
+                inClass = 'ui-view-moveFromLeftFade';
+                break;
+            case 11:
+                outClass = 'ui-view-moveToTopFade';
+                inClass = 'ui-view-moveFromBottomFade';
+                break;
+            case 12:
+                outClass = 'ui-view-moveToBottomFade';
+                inClass = 'ui-view-moveFromTopFade';
+                break;
+            case 13:
+                outClass = 'ui-view-moveToLeftEasing ui-view-ontop';
+                inClass = 'ui-view-moveFromRight';
+                break;
+            case 14:
+                outClass = 'ui-view-moveToRightEasing ui-view-ontop';
+                inClass = 'ui-view-moveFromLeft';
+                break;
+            case 15:
+                outClass = 'ui-view-moveToTopEasing ui-view-ontop';
+                inClass = 'ui-view-moveFromBottom';
+                break;
+            case 16:
+                outClass = 'ui-view-moveToBottomEasing ui-view-ontop';
+                inClass = 'ui-view-moveFromTop';
+                break;
+            case 17:
+                outClass = 'ui-view-scaleDown';
+                inClass = 'ui-view-moveFromRight ui-view-ontop';
+                break;
+            case 18:
+                outClass = 'ui-view-scaleDown';
+                inClass = 'ui-view-moveFromLeft ui-view-ontop';
+                break;
+            case 19:
+                outClass = 'ui-view-scaleDown';
+                inClass = 'ui-view-moveFromBottom ui-view-ontop';
+                break;
+            case 20:
+                outClass = 'ui-view-scaleDown';
+                inClass = 'ui-view-moveFromTop ui-view-ontop';
+                break;
+            case 21:
+                outClass = 'ui-view-scaleDown';
+                inClass = 'ui-view-scaleUpDown ui-view-delay300';
+                break;
+            case 22:
+                outClass = 'ui-view-scaleDownUp';
+                inClass = 'ui-view-scaleUp ui-view-delay300';
+                break;
+            case 23:
+                outClass = 'ui-view-moveToLeft ui-view-ontop';
+                inClass = 'ui-view-scaleUp';
+                break;
+            case 24:
+                outClass = 'ui-view-moveToRight ui-view-ontop';
+                inClass = 'ui-view-scaleUp';
+                break;
+            case 25:
+                outClass = 'ui-view-moveToTop ui-view-ontop';
+                inClass = 'ui-view-scaleUp';
+                break;
+            case 26:
+                outClass = 'ui-view-moveToBottom ui-view-ontop';
+                inClass = 'ui-view-scaleUp';
+                break;
+            case 27:
+                outClass = 'ui-view-scaleDownCenter';
+                inClass = 'ui-view-scaleUpCenter ui-view-delay400';
+                break;
+            case 28:
+                outClass = 'ui-view-rotateRightSideFirst';
+                inClass = 'ui-view-moveFromRight ui-view-delay200 ui-view-ontop';
+                break;
+            case 29:
+                outClass = 'ui-view-rotateLeftSideFirst';
+                inClass = 'ui-view-moveFromLeft ui-view-delay200 ui-view-ontop';
+                break;
+            case 30:
+                outClass = 'ui-view-rotateTopSideFirst';
+                inClass = 'ui-view-moveFromTop ui-view-delay200 ui-view-ontop';
+                break;
+            case 31:
+                outClass = 'ui-view-rotateBottomSideFirst';
+                inClass = 'ui-view-moveFromBottom ui-view-delay200 ui-view-ontop';
+                break;
+            case 32:
+                outClass = 'ui-view-flipOutRight';
+                inClass = 'ui-view-flipInLeft ui-view-delay500';
+                break;
+            case 33:
+                outClass = 'ui-view-flipOutLeft';
+                inClass = 'ui-view-flipInRight ui-view-delay500';
+                break;
+            case 34:
+                outClass = 'ui-view-flipOutTop';
+                inClass = 'ui-view-flipInBottom ui-view-delay500';
+                break;
+            case 35:
+                outClass = 'ui-view-flipOutBottom';
+                inClass = 'ui-view-flipInTop ui-view-delay500';
+                break;
+            case 36:
+                outClass = 'ui-view-rotateFall ui-view-ontop';
+                inClass = 'ui-view-scaleUp';
+                break;
+            case 37:
+                outClass = 'ui-view-rotateOutNewspaper';
+                inClass = 'ui-view-rotateInNewspaper ui-view-delay500';
+                break;
+            case 38:
+                outClass = 'ui-view-rotatePushLeft';
+                inClass = 'ui-view-moveFromRight';
+                break;
+            case 39:
+                outClass = 'ui-view-rotatePushRight';
+                inClass = 'ui-view-moveFromLeft';
+                break;
+            case 40:
+                outClass = 'ui-view-rotatePushTop';
+                inClass = 'ui-view-moveFromBottom';
+                break;
+            case 41:
+                outClass = 'ui-view-rotatePushBottom';
+                inClass = 'ui-view-moveFromTop';
+                break;
+            case 42:
+                outClass = 'ui-view-rotatePushLeft';
+                inClass = 'ui-view-rotatePullRight ui-view-delay180';
+                break;
+            case 43:
+                outClass = 'ui-view-rotatePushRight';
+                inClass = 'ui-view-rotatePullLeft ui-view-delay180';
+                break;
+            case 44:
+                outClass = 'ui-view-rotatePushTop';
+                inClass = 'ui-view-rotatePullBottom ui-view-delay180';
+                break;
+            case 45:
+                outClass = 'ui-view-rotatePushBottom';
+                inClass = 'ui-view-rotatePullTop ui-view-delay180';
+                break;
+            case 46:
+                outClass = 'ui-view-rotateFoldLeft';
+                inClass = 'ui-view-moveFromRightFade';
+                break;
+            case 47:
+                outClass = 'ui-view-rotateFoldRight';
+                inClass = 'ui-view-moveFromLeftFade';
+                break;
+            case 48:
+                outClass = 'ui-view-rotateFoldTop';
+                inClass = 'ui-view-moveFromBottomFade';
+                break;
+            case 49:
+                outClass = 'ui-view-rotateFoldBottom';
+                inClass = 'ui-view-moveFromTopFade';
+                break;
+            case 50:
+                outClass = 'ui-view-moveToRightFade';
+                inClass = 'ui-view-rotateUnfoldLeft';
+                break;
+            case 51:
+                outClass = 'ui-view-moveToLeftFade';
+                inClass = 'ui-view-rotateUnfoldRight';
+                break;
+            case 52:
+                outClass = 'ui-view-moveToBottomFade';
+                inClass = 'ui-view-rotateUnfoldTop';
+                break;
+            case 53:
+                outClass = 'ui-view-moveToTopFade';
+                inClass = 'ui-view-rotateUnfoldBottom';
+                break;
+            case 54:
+                outClass = 'ui-view-rotateRoomLeftOut ui-view-ontop';
+                inClass = 'ui-view-rotateRoomLeftIn';
+                break;
+            case 55:
+                outClass = 'ui-view-rotateRoomRightOut ui-view-ontop';
+                inClass = 'ui-view-rotateRoomRightIn';
+                break;
+            case 56:
+                outClass = 'ui-view-rotateRoomTopOut ui-view-ontop';
+                inClass = 'ui-view-rotateRoomTopIn';
+                break;
+            case 57:
+                outClass = 'ui-view-rotateRoomBottomOut ui-view-ontop';
+                inClass = 'ui-view-rotateRoomBottomIn';
+                break;
+            case 58:
+                outClass = 'ui-view-rotateCubeLeftOut ui-view-ontop';
+                inClass = 'ui-view-rotateCubeLeftIn';
+                break;
+            case 59:
+                outClass = 'ui-view-rotateCubeRightOut ui-view-ontop';
+                inClass = 'ui-view-rotateCubeRightIn';
+                break;
+            case 60:
+                outClass = 'ui-view-rotateCubeTopOut ui-view-ontop';
+                inClass = 'ui-view-rotateCubeTopIn';
+                break;
+            case 61:
+                outClass = 'ui-view-rotateCubeBottomOut ui-view-ontop';
+                inClass = 'ui-view-rotateCubeBottomIn';
+                break;
+            case 62:
+                outClass = 'ui-view-rotateCarouselLeftOut ui-view-ontop';
+                inClass = 'ui-view-rotateCarouselLeftIn';
+                break;
+            case 63:
+                outClass = 'ui-view-rotateCarouselRightOut ui-view-ontop';
+                inClass = 'ui-view-rotateCarouselRightIn';
+                break;
+            case 64:
+                outClass = 'ui-view-rotateCarouselTopOut ui-view-ontop';
+                inClass = 'ui-view-rotateCarouselTopIn';
+                break;
+            case 65:
+                outClass = 'ui-view-rotateCarouselBottomOut ui-view-ontop';
+                inClass = 'ui-view-rotateCarouselBottomIn';
+                break;
+            case 66:
+                outClass = 'ui-view-rotateSidesOut';
+                inClass = 'ui-view-rotateSidesIn ui-view-delay200';
+                break;
+            case 67:
+                outClass = 'ui-view-rotateSlideOut';
+                inClass = 'ui-view-rotateSlideIn';
+                break;
+            case 68:
+                outClass = 'ui-view-fade ui-view-ontop';
+                inClass = 'ui-view-fade ui-view-delay200';
+                break;
+        }
+        //
+        return {
+            'inClass': inClass,
+            'outClass': outClass
+        };
+    };
+
+    /**
+     * 切换
+     */
+    var _change = function(currentView, nextView, animation, callback) {
+        if (!currentView || !nextView || !animation || animation == 0) {
+            setTimeout(function() {
+                onEndAnimation(null, null, callback);
+            }, 13);
+            return;
+        }
+        //
+        saveViewClass(currentView, nextView);
+        //设置样式
+        nextView.addClass('ui-view-current');
+        var animationClass = getAnimationClass(animation);
+        //
+        currentView.addClass(animationClass.outClass).on(animationEndEventName, function() {
+            currentView.off(animationEndEventName);
+            endCurrentView = true;
+            if (endNextView) {
+                onEndAnimation(currentView, nextView, callback);
+            }
+        });
+        //
+        nextView.addClass(animationClass.inClass).on(animationEndEventName, function() {
+            nextView.off(animationEndEventName);
+            endNextView = true;
+            if (endCurrentView) {
+                onEndAnimation(currentView, nextView, callback);
+            }
+        });
+        //
+        if (!supportCSSAnimation) {
+            onEndAnimation(currentView, nextView, callback);
+        }
+    };
+
+    exports.change = function(currentView, nextView, animation, callback, option) {
+        //确保同时只有一个动画在进行
+        if (_isAnimating) return;
+        _isAnimating = true;
+        //
+        mask.begin(option);
+        currentView = currentView.ui || currentView;
+        nextView = nextView.ui || nextView;
+        _change(currentView, nextView, animation, function() {
+            mask.end(option);
+            if (callback) callback();
+            _isAnimating = false;
+        });
+    };
+
+});

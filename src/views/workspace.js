@@ -59,7 +59,7 @@ define(function(require, exports, module) {
         },
         updateState: function() {
             var self = this;
-            self.el.fileItems = self.el.fileItems || self.el.tree.find('.item-file');
+            self.el.fileItems = self.el.tree.find('.item-file');
             self.el.fileItems.removeClass('selected');
             var currentFile = self.model.file.currentFile || {};
             if (currentFile) {
@@ -83,7 +83,7 @@ define(function(require, exports, module) {
             var self = this;
             var item = self._getItemInfo(context, type);
             contextMenu.finder.finderItem = item;
-            contextMenu.finder.onPopup.trigger();
+            contextMenu.finder.call('popup');
             contextMenu.finder.popup(context.pageX, context.pageY);
         }
     });

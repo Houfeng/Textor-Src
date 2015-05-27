@@ -80,15 +80,14 @@ define(function(require, exports, module) {
             var self = this;
             var sidebar = self.model.sidebar;
             sidebar.pickMenu(id);
-            ExtensionManager.trigger('OpenSidebar', id, function() {
+            ExtensionManager.call('OpenSidebar', id, function() {
                 self.el.sidebarArea.show();
                 self.sidebarPanel.render(null, function() {
-                    move(self.el.sidebarArea[0]).set("left", 0).duration(sidebar.speed).end(function() {
+                    self.el.sidebarArea.animate({"left":"0px"},sidebar.speed,function() {
                         if (callback) callback(true);
                     });
-                    move(self.ui[0]).set("padding-left", sidebar.width).duration(sidebar.speed).end(function() {
+                    self.ui.animate({"padding-left":sidebar.width + "px"},sidebar.speed,function() {
                         self.controller.resizeAllEditor();
-                        self.root.sidebarMenu.render();
                         self.ui[0].scrollTop = 0;
                         self.ui[0].scrollLeft = 0;
                         //延迟确定 Tab 能正确计算
@@ -97,6 +96,7 @@ define(function(require, exports, module) {
                         }, 50);
                     });
                 });
+                self.root.sidebarMenu.render();
             });
         },
         //关闭侧栏
@@ -104,12 +104,11 @@ define(function(require, exports, module) {
             var self = this;
             var sidebar = self.model.sidebar;
             sidebar.unPickMenu(id);
-            move(self.el.sidebarArea[0]).set("left", -sidebar.width).duration(sidebar.speed).end(function() {
+            self.el.sidebarArea.animate({"left":"-" + sidebar.width + "px"},sidebar.speed,function() {
                 if (callback) callback(false);
             });
-            move(self.ui[0]).set("padding-left", sidebar.menuWidth).duration(sidebar.speed).end(function() {
+            self.ui.animate({"padding-left":sidebar.menuWidth + "px"},sidebar.speed,function() {
                 self.controller.resizeAllEditor();
-                self.root.sidebarMenu.render();
                 self.el.sidebarArea.hide();
                 self.ui[0].scrollTop = 0;
                 self.ui[0].scrollLeft = 0;
@@ -118,6 +117,7 @@ define(function(require, exports, module) {
                     self.root.tab.render();
                 }, 50);
             });
+            self.root.sidebarMenu.render();
         },
         //切换侧栏状态
         toggleSidebar: function(context, id, callback) {
@@ -135,18 +135,18 @@ define(function(require, exports, module) {
             var self = this;
             var footer = self.model.footer;
             footer.pickMenu(id);
-            ExtensionManager.trigger('OpenFooter', id, function() {
+            ExtensionManager.call('OpenFooter', id, function() {
                 self.el.footerArea.show();
                 self.footerPanel.render(null, function() {
-                    move(self.el.footerArea[0]).set("bottom", 0).duration(footer.speed).end(function() {
+                    self.el.footerArea.animate({"bottom": "0px"},footer.speed,function() {
                         if (callback) callback(true);
                     });
-                    move(self.el.mainArea[0]).set("padding-bottom", footer.height).duration(footer.speed).end(function() {
+                    self.el.mainArea.animate({"padding-bottom":footer.height + "px"},footer.speed,function() {
                         self.controller.resizeAllEditor();
-                        self.root.footerMenu.render();
                         self.ui[0].scrollTop = 0;
                         self.ui[0].scrollLeft = 0;
                     });
+                    self.root.footerMenu.render();
                 });
             });
         },
@@ -155,16 +155,16 @@ define(function(require, exports, module) {
             var self = this;
             var footer = self.model.footer;
             footer.unPickMenu(id);
-            move(self.el.footerArea[0]).set("bottom", -footer.height).duration(footer.speed).end(function() {
+            self.el.footerArea.animate({"bottom":"-" + footer.height + "px"},footer.speed,function() {
                 if (callback) callback(false);
             });
-            move(self.el.mainArea[0]).set("padding-bottom", footer.menuHeight).duration(footer.speed).end(function() {
+            self.el.mainArea.animate({"padding-bottom":footer.menuHeight + "px"},footer.speed,function() {
                 self.controller.resizeAllEditor();
-                self.root.footerMenu.render();
                 self.el.footerArea.hide();
                 self.ui[0].scrollTop = 0;
                 self.ui[0].scrollLeft = 0;
             });
+            self.root.footerMenu.render();
         },
         //切换底栏状态
         toggleFooter: function(context, id, callback) {

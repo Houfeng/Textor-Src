@@ -8,10 +8,20 @@
     <meta name="author" content="houfeng" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="format-detection" content="email=no" />
-    <script src="lib/mokit/ems.js" data-main='main'></script>
+    <script>
+        /* 处理 node 和 ems 的 require 冲突 */
+        window.require_node = window.require;
+        window.node_require = window.require;
+        /* 浏览器 console */
+        window.browser_console = window.console;
+        /* 全局 textor 对象 */
+        window.textor = window.textor || {};
+        window.textor.debugMode = false;
+    </script>
+    <script src="./lib/mokit/ems.js" data-main="./main"></script>
 </head>
 
-<body oncontextmenu="return false;">
+<body style='background: #222;' oncontextmenu="return false;">
 </body>
 
 </html>

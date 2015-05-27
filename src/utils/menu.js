@@ -4,12 +4,19 @@ define(function(require, exports, module) {
     var $ = require('mokit/jquery');
     var utils = require('mokit/utils');
     var gui = require_node('nw.gui');
-    var win = gui.Window.get();
     var console = require('self/models/console');
+
+    exports.Menu = gui.Menu;
+    exports.MenuItem = gui.MenuItem;
+
+    return;
 
     var doc = $(document);
     var holder = $(document.body);
 
+    /**
+     * 菜单类（新版的 nw 修复了菜单 Bug，些类弃用）
+     */
     function Menu() {
         var menu = this;
         menu.items = [];
@@ -60,6 +67,9 @@ define(function(require, exports, module) {
         };
     };
 
+    /**
+     * 菜单项类（新版的 nw 修复了菜单 Bug，些类弃用）
+     */
     function MenuItem(option) {
         var item = this;
         option = option || {};
@@ -134,8 +144,5 @@ define(function(require, exports, module) {
             }
         };
     };
-
-    exports.Menu = Menu;
-    exports.MenuItem = MenuItem;
 
 });

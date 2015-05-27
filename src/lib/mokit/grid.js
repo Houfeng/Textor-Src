@@ -1,1 +1,128 @@
-/*csd*/define(function(require,exports,module){"use strict";var d=require("./utils"),a=require("./jquery");function b(h,i){var f=0;var g=0;d.each(h,function(j){if(this.indexOf("%")>-1){h[j]=i*parseInt(this)/100;}else{h[j]=parseInt(this);}if(isNaN(h[j])){f++;}else{g+=h[j];}});if(f>0){var e=(i-g)/f;d.each(h,function(j){if(isNaN(h[j])){h[j]=e;}});}return h;}function c(i){i=a(i);var q=i.attr("data-grid-scroll-x");var p=i.attr("data-grid-scroll-y");var l=parseInt(i.attr("data-grid-rectify-x")||"0");var m=parseInt(i.attr("data-grid-rectify-y")||"0");var s={width:i.width(),height:i.height()};if(p&&i[0].scrollWidth>s.width){s.width=i[0].scrollWidth;}if(p&&i[0].scrollHeight>s.height){s.height=i[0].scrollHeight;}s.width+=l;s.height+=m;var h=i.attr("data-grid-cols");var n=i.attr("data-grid-rows");if(!h||!n){return;}h=b(h.split(","),s.width);n=b(n.split(","),s.height);var g=null;var o=i.attr("data-grid-scope");if(o=="all"){g=i.find("[data-role~=cell]");}else{g=i.children("[data-role~=cell]");}for(var k=0;k<n.length;k++){for(var e=0;e<h.length;e++){var f=a(g[h.length*k+e]);var t=h[e];t-=(parseInt(f.css("marginLeft"))+parseInt(f.css("marginRight")));t-=(parseInt(f.css("paddingLeft"))+parseInt(f.css("paddingRight")));t-=(parseInt(f.css("borderLeftWidth"))+parseInt(f.css("borderRightWidth")));var j=n[k];j-=(parseInt(f.css("marginTop"))+parseInt(f.css("marginBottom")));j-=(parseInt(f.css("paddingTop"))+parseInt(f.css("paddingBottom")));j-=(parseInt(f.css("borderTopWidth"))+parseInt(f.css("borderBottomWidth")));if(t==s.width){t="100%";}if(j==s.height){j="100%";}f.width(t).height(j);}}}exports.use=function(f){var e=f.find("[data-role~=grid]");var g=f.attr("data-role");if(g&&d.contains(g,"grid")){e.splice(0,0,f[0]);}e.each(function(){c(this);}).resize(function(){c(this);});a(window).resize(function(){e.each(function(){c(this);});});};});
+/**
+ * 网格布局组件
+ * @class Grid
+ * @static
+ * @module mokit
+ */
+define(function(require, exports, module) {
+    "require:nomunge,exports:nomunge,module:nomunge";
+    "use strict";
+
+    var utils = require('./utils');
+    var $ = require('./jquery');
+    var self = exports;
+
+    function handleSize(list, max) {
+        var autoCount = 0;
+        var fiexdStat = 0;
+        utils.each(list, function(i) {
+            if (this.indexOf('%') > -1) {
+                list[i] = max * parseInt(this) / 100;
+            } else {
+                list[i] = parseInt(this);
+            }
+            if (isNaN(list[i])) {
+                autoCount++;
+            } else {
+                fiexdStat += list[i];
+            }
+        });
+        if (autoCount > 0) {
+            var autoAvg = (max - fiexdStat) / autoCount;
+            utils.each(list, function(i) {
+                if (isNaN(list[i])) {
+                    list[i] = autoAvg;
+                }
+            });
+        }
+        return list;
+    };
+
+    function layout(grid) {
+        grid = $(grid);
+        var scrollY = grid.attr('data-grid-scroll-x');
+        var scrollX = grid.attr('data-grid-scroll-y');
+        var rectifyX = parseInt(grid.attr("data-grid-rectify-x") || '0');
+        var rectifyY = parseInt(grid.attr("data-grid-rectify-y") || '0');
+        //取不包括“边框、填充、外边距”的大小
+        var size = {
+            width: grid.width(),
+            height: grid.height()
+        };
+        //处理容器滚动
+        if (scrollX && grid[0].scrollWidth > size.width) {
+            size.width = grid[0].scrollWidth;
+        }
+        if (scrollX && grid[0].scrollHeight > size.height) {
+            size.height = grid[0].scrollHeight;
+        }
+        //alert("grid:"+size.width+','+size.height);
+        //处理容器纠偏
+        size.width += rectifyX;
+        size.height += rectifyY;
+        //
+        var cols = grid.attr("data-grid-cols");
+        var rows = grid.attr("data-grid-rows");
+        if (!cols || !rows) return;
+        cols = handleSize(cols.split(','), size.width);
+        rows = handleSize(rows.split(','), size.height);
+        //
+        var cells = null;
+        var scope = grid.attr("data-grid-scope");
+        if (scope == 'all') {
+            cells = grid.find("[data-role~=cell]");
+        } else {
+            cells = grid.children("[data-role~=cell]");
+        }
+        //
+        for (var r = 0; r < rows.length; r++) {
+            for (var c = 0; c < cols.length; c++) {
+                var cell = $(cells[cols.length * r + c]);
+                //处理单元格外边距
+                var width = cols[c];
+                width -= (parseInt(cell.css('marginLeft')) + parseInt(cell.css('marginRight')));
+                width -= (parseInt(cell.css('paddingLeft')) + parseInt(cell.css('paddingRight')));
+                width -= (parseInt(cell.css('borderLeftWidth')) + parseInt(cell.css('borderRightWidth')));
+                var height = rows[r];
+                height -= (parseInt(cell.css('marginTop')) + parseInt(cell.css('marginBottom')));
+                height -= (parseInt(cell.css('paddingTop')) + parseInt(cell.css('paddingBottom')));
+                height -= (parseInt(cell.css('borderTopWidth')) + parseInt(cell.css('borderBottomWidth')));
+                //alert("cell width:"+width+","+cols[c]);
+                //处理单元格百分百问题
+                if (width == size.width) width = '100%';
+                if (height == size.height) height = '100%';
+                //设置单元格大小
+                cell.width(width).height(height);
+            }
+        }
+    };
+
+    /**
+     * 对一个UI元素启用网格布局
+     * @method use
+     * @param  {jQueryObject} ui 要启用网格布局的UI对象（jQuery对象）
+     * @return {void}    无返回值
+     * @static
+     */
+    self.use = function(ui) {
+        var grids = ui.find('[data-role~=grid]');
+
+        //如果页面也是Grid
+        var uiRole = ui.attr('data-role');
+        if (uiRole && utils.contains(uiRole, 'grid')) {
+            grids.splice(0, 0, ui[0]);
+        }
+
+        grids.each(function() {
+            layout(this);
+        }).resize(function() {
+            layout(this);
+        });
+
+        $(window).resize(function() {
+            grids.each(function() {
+                layout(this);
+            });
+        });
+    };
+});

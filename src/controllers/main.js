@@ -51,7 +51,7 @@ define(function(require, exports, module) {
                 file: FileManager,
                 config: config
             };
-            ExtensionManager.trigger('CreateModel', _model);
+            ExtensionManager.call('CreateModel', _model);
             //实例根视图
             self.rootView = new MainView({
                 model: _model
@@ -78,7 +78,7 @@ define(function(require, exports, module) {
             ExtensionManager.ready(extensionContext);
             //显示视图
             self.setView(self.rootView, function() {
-                ExtensionManager.trigger('CreateContextMenu', contextMenu);
+                ExtensionManager.call('CreateContextMenu', contextMenu);
                 ExtensionManager.render(extensionContext);
                 console.log("主视图加载完成");
                 //订阅窗口关闭事件
@@ -257,7 +257,7 @@ define(function(require, exports, module) {
                         self.refrushWorkspace(context);
                         context.view.root.tab.render();
                         context.view.root.state.render();
-                        ExtensionManager.trigger('ChooseDir', rs);
+                        ExtensionManager.call('ChooseDir', rs);
                     });
                 });
             });
@@ -274,7 +274,7 @@ define(function(require, exports, module) {
                         self.refrushWorkspace(context);
                         context.view.root.tab.render();
                         context.view.root.state.render();
-                        ExtensionManager.trigger('ChooseFile', rs);
+                        ExtensionManager.call('ChooseFile', rs);
                     });
                 });
             });
@@ -388,7 +388,7 @@ define(function(require, exports, module) {
                 self.refrushWorkspace(context);
                 context.view.root.tab.render();
                 context.view.root.state.render();
-                ExtensionManager.trigger('ChooseFile', rs);
+                ExtensionManager.call('ChooseFile', rs);
             });
         },
 
@@ -447,13 +447,13 @@ define(function(require, exports, module) {
                             currentFile.mode = editMode.getMode(currentFile.path);
                             currentFile.editor.setMode(currentFile.mode);
                             currentFile.editor.focus();
-                            ExtensionManager.trigger('OpenFile', currentFile);
+                            ExtensionManager.call('OpenFile', currentFile);
                         });
                     });
                 } else {
                     currentFile.editor.show();
                     currentFile.editor.focus();
-                    ExtensionManager.trigger('OpenFile', currentFile);
+                    ExtensionManager.call('OpenFile', currentFile);
                 }
                 //重绘相关view
                 context.view.root.tab.render();
@@ -506,11 +506,11 @@ define(function(require, exports, module) {
                             if (rs.state == 2) {
                                 self.saveFile(context, fileInfo.path, function() {
                                     self.closeFile(context, path, true);
-                                    ExtensionManager.trigger('CloseFile', fileInfo);
+                                    ExtensionManager.call('CloseFile', fileInfo);
                                 });
                             } else if (rs.state == 1) {
                                 self.closeFile(context, path, true);
-                                ExtensionManager.trigger('CloseFile', fileInfo);
+                                ExtensionManager.call('CloseFile', fileInfo);
                             }
                         }
                     });
@@ -559,7 +559,7 @@ define(function(require, exports, module) {
                             FileManager.openFiles[path] = null;
                             delete FileManager.openFiles[path];
                             //重新触发打开事件，以启用相关插件功能
-                            ExtensionManager.trigger('OpenFile', fileInfo);
+                            ExtensionManager.call('OpenFile', fileInfo);
                             //将isNewFile置为false并保存文件。
                             fileInfo.isNewFile = false;
                             self.saveFile(context, fileInfo.path, callback);
@@ -573,7 +573,7 @@ define(function(require, exports, module) {
                     context.view.root.state.render();
                     //self.refrushWorkspace(context);
                     self.updateWorkspace(context);
-                    ExtensionManager.trigger('SaveFile', fileInfo);
+                    ExtensionManager.call('SaveFile', fileInfo);
                     if (callback) callback();
                 });
                 return;
@@ -585,7 +585,7 @@ define(function(require, exports, module) {
          */
         openDir: function(context, path) {
             FileManager.openDir(path);
-            ExtensionManager.trigger('OpenDir', path);
+            ExtensionManager.call('OpenDir', path);
         },
 
         /**
@@ -593,7 +593,7 @@ define(function(require, exports, module) {
          */
         closeDir: function(context, path) {
             FileManager.closeDir(path);
-            ExtensionManager.trigger('CloseDir', path);
+            ExtensionManager.call('CloseDir', path);
         },
 
         /*

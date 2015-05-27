@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
     "require:nomunge,exports:nomunge,module:nomunge";
     var self = exports;
-    var gui = require('self/utils/menu');
     var utils = require('mokit/utils');
 
     var lang = null;
@@ -310,18 +309,21 @@ define(function(require, exports, module) {
         context = _context;
         lang = context.lang;
     };
-
+    
     self.onCreateContextMenu = function(contextMenu) {
-        var finderMenu = {};
+        //菜单类
+        var Menu = contextMenu.Menu;
+        var MenuItem = contextMenu.MenuItem;
+
         //新建文件或目录的菜单项
-        finderMenu.newItem = [
-            new gui.MenuItem({
+        var newItems = [
+            new MenuItem({
                 label: lang.new_file,
                 click: function() {
                     newFile();
                 }
             }),
-            new gui.MenuItem({
+            new MenuItem({
                 label: lang.new_folder,
                 click: function() {
                     newDir();
@@ -329,26 +331,26 @@ define(function(require, exports, module) {
             })
         ];
         //公共菜单项
-        finderMenu.common = [
-            new gui.MenuItem({
-                label: lang["delete"],
+        var commonItems = [
+            new MenuItem({
+                label: lang["delete"].toString(),
                 click: function() {
                     deleteItem();
                 }
             }),
-            new gui.MenuItem({
+            new MenuItem({
                 label: lang.rename,
                 click: function() {
                     renameItem();
                 }
             }),
-            new gui.MenuItem({
+            new MenuItem({
                 label: lang.move,
                 click: function() {
                     moveItem();
                 }
             }),
-            new gui.MenuItem({
+            new MenuItem({
                 label: lang.copy,
                 click: function() {
                     copyItem();
@@ -356,14 +358,14 @@ define(function(require, exports, module) {
             })
         ];
         //文件打开菜单项
-        finderMenu.open = [
-            new gui.MenuItem({
+        var openItems = [
+            new MenuItem({
                 label: lang.show_in_folder,
                 click: function() {
                     showItemInFolder();
                 }
             }),
-            new gui.MenuItem({
+            new MenuItem({
                 label: lang.open_in_default,
                 click: function() {
                     openItem();
@@ -371,62 +373,61 @@ define(function(require, exports, module) {
             })
         ];
         //根菜单项
-        finderMenu.root = [
-            new gui.MenuItem({
+        var rootItems = [
+            new MenuItem({
                 label: lang.refrush_workspace,
                 click: function() {
                     reLoadWorkspace();
                 }
             }),
-            new gui.MenuItem({
+            new MenuItem({
                 label: lang.remove_from_workspace,
                 click: function() {
                     remove();
                 }
             })
         ];
-        //var tfsMenu = new gui.Menu();
-        //tfsMenu.append(new gui.MenuItem({ label: '从工作区移除', click:remove }));
-        //finderMenu.root[0].submenu=tfsMenu;
-        //分隔项
-        finderMenu.separator = new gui.MenuItem({
-            type: 'separator'
-        });
-        //--
+
         //添加新建菜单
-        utils.each(finderMenu.newItem, function(i, menuItem) {
+        utils.each(newItems, function(i, menuItem) {
             contextMenu.finder.append(menuItem);
         });
-        contextMenu.finder.append(finderMenu.separator);
+        contextMenu.finder.append(new MenuItem({
+            type: 'separator'
+        }));
         //添加公共菜单
-        utils.each(finderMenu.common, function(i, menuItem) {
+        utils.each(commonItems, function(i, menuItem) {
             contextMenu.finder.append(menuItem);
         });
-        contextMenu.finder.append(finderMenu.separator);
+        contextMenu.finder.append(new MenuItem({
+            type: 'separator'
+        }));
         //添加打开菜单
-        utils.each(finderMenu.open, function(i, menuItem) {
+        utils.each(openItems, function(i, menuItem) {
             contextMenu.finder.append(menuItem);
         });
-        contextMenu.finder.append(finderMenu.separator);
+        contextMenu.finder.append(new MenuItem({
+            type: 'separator'
+        }));
         //添加根目录菜单
-        utils.each(finderMenu.root, function(i, menuItem) {
+        utils.each(rootItems, function(i, menuItem) {
             contextMenu.finder.append(menuItem);
         });
         //--
-        contextMenu.finder.onPopup(function() {
+        contextMenu.finder.on('popup', function() {
             finderItem = contextMenu.finder.finderItem;
             //控制新建菜单的状态
-            utils.each(finderMenu.newItem, function(i, menuItem) {
+            utils.each(newItems, function(i, menuItem) {
                 menuItem.enabled = (finderItem.type == 'dir');
             });
             //控制公共菜单状态
-            utils.each(finderMenu.common, function(i, menuItem) {
+            utils.each(commonItems, function(i, menuItem) {
                 menuItem.enabled = !finderItem.isRoot;
             });
             //用默认程序打开菜单状态
-            finderMenu.open[1].enabled = (finderItem.type == 'file');
+            openItems[1].enabled = (finderItem.type == 'file');
             //控制针对根目录的菜单项的状态
-            utils.each(finderMenu.root, function(i, menuItem) {
+            utils.each(rootItems, function(i, menuItem) {
                 menuItem.enabled = finderItem.isRoot;
             });
         });

@@ -4,6 +4,7 @@ define(function(require, exports, module) {
 
     var self = exports;
 
+    var ExtensionManager = require('self/models/extension_manager');
     var AutoComplete = require("./common/autocomplete");
 
     //组件记库
@@ -18,7 +19,7 @@ define(function(require, exports, module) {
 
     self.onReady = function(_context) {
         context = _context;
-        context.trigger("AutocompleteReady", words);
+        ExtensionManager.call("AutocompleteReady", words);
     };
 
     //在设置文件模式时

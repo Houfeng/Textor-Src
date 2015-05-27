@@ -1,1 +1,22 @@
-/*csd*/(function(){var a=typeof require!="undefined"&&require;define(function(require,exports,module){"use strict";var b=require("ajax");exports.load=function(d,f,e,c){var g=f.toUrl(d);if(a&&a.nodeRequire){e(a.nodeRequire("fs").readFileSync(g,"utf8"));}else{b.get({url:g,callback:e,dataType:"text"});}};});})();
+(function() {
+    var globalRequire = typeof require != "undefined" && require;
+    define(function(require, exports, module) {
+        "require:nomunge,exports:nomunge,module:nomunge";
+        "use strict";
+
+        var ajax = require("ajax");
+
+        exports.load = function(name, req, onLoad, config) {
+            var uri = req.toUrl(name);
+            if (globalRequire && globalRequire.nodeRequire) {
+                onLoad(globalRequire.nodeRequire('fs').readFileSync(uri, 'utf8'));
+            } else {
+                ajax.get({
+                    url: uri,
+                    callback: onLoad,
+                    dataType: 'text'
+                });
+            }
+        };
+    });
+})();

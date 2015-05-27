@@ -1,1 +1,13 @@
-/*csd*/define(function(require,exports,module){"use strict";var a=require("json");exports.load=function(c,e,d,b){var f=e.toUrl(c);require("ems-text!"+f,function(g){d(a.parse(g));});};});
+define(function(require, exports, module) {
+    "require:nomunge,exports:nomunge,module:nomunge";
+    "use strict";
+
+    var json = require('json');
+
+    exports.load = function(name, req, onLoad, config) {
+        var uri = req.toUrl(name);
+        require('ems-text!' + uri, function(rs) {
+            onLoad(json.parse(rs));
+        });
+    };
+});

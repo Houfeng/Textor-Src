@@ -30,7 +30,7 @@ define(function(require, exports, module) {
             }
             self.ui.on('contextmenu', function(event) {
                 contextMenu.editor.editor = self;
-                contextMenu.editor.onPopup.trigger();
+                contextMenu.editor.call('onPopup');
                 contextMenu.editor.popup(event.pageX, event.pageY);
             });
         },
@@ -148,44 +148,44 @@ define(function(require, exports, module) {
         },
         setMode: function(name, callback) {
             var self = this;
-            utils.async(function() {
-                self.file = self.file || {};
-                if (modeCache[name]) {
-                    self.file.mode = name;
-                    self.session.setMode(modeCache[name]);
-                    ExtMgr.trigger('SetMode', self.file);
-                    self.root.updateStateBar(self.defaultContext);
-                    if (callback) callback();
-                    return;
-                }
-                require("ace/mode/" + name, function(rs) {
-                    self.file.mode = name;
-                    modeCache[name] = new rs.Mode();
-                    self.session.setMode(modeCache[name]);
-                    ExtMgr.trigger('SetMode', self.file);
-                    self.root.updateStateBar(self.defaultContext);
-                    if (callback) callback();
-                });
-            }, 0);
+            //utils.async(function() {
+            self.file = self.file || {};
+            if (modeCache[name]) {
+                self.file.mode = name;
+                self.session.setMode(modeCache[name]);
+                ExtMgr.call('SetMode', self.file);
+                self.root.updateStateBar(self.defaultContext);
+                if (callback) callback();
+                return;
+            }
+            require("ace/mode/" + name, function(rs) {
+                self.file.mode = name;
+                modeCache[name] = new rs.Mode();
+                self.session.setMode(modeCache[name]);
+                ExtMgr.call('SetMode', self.file);
+                self.root.updateStateBar(self.defaultContext);
+                if (callback) callback();
+            });
+            //}, 0);
         },
         getMode: function() {
             return self.file.mode;
         },
         setTheme: function(name, callback) {
             var self = this;
-            utils.async(function() {
-                if (themeCache[editorTheme]) {
+            //utils.async(function() {
+            if (themeCache[editorTheme]) {
+                self.innerEditor.setStyle(themeCache[editorTheme]);
+                if (callback) callback();
+            } else {
+                var theme = "ace/theme/" + name + ".css";
+                require(theme, function() {
+                    themeCache[editorTheme] = 'ace-' + name;
                     self.innerEditor.setStyle(themeCache[editorTheme]);
                     if (callback) callback();
-                } else {
-                    var theme = "ace/theme/" + name + ".css";
-                    require(theme, function() {
-                        themeCache[editorTheme] = 'ace-' + name;
-                        self.innerEditor.setStyle(themeCache[editorTheme]);
-                        if (callback) callback();
-                    });
-                }
-            }, 0);
+                });
+            }
+            //}, 0);
         },
         copy: function() {
             document.execCommand("copy");

@@ -1,11 +1,4 @@
 "use strict";
-/*处理 node 和 ems 的 require 冲突 */
-top.require_node = top.require;
-top.require_node = top.require_node;
-top.textor = top.textor || {};
-
-/*是否是 Debug 模式*/
-top.textor.debugMode = false;
 
 /*包配置*/
 ems.config({
@@ -46,19 +39,21 @@ define(function(require, exports, module) {
     var gui = require_node('nw.gui');
     var win = gui.Window.get();
 
-    if (!top.textor.debugMode) {
-        //全局错误处理开始
-        //浏览器全局错误处理方法
-        top.onerror = function(msg, url, line) {
-            console.error(msg + '\r\n' + url + ':' + line);
-            return true;
-        };
-        //Node 全局错误处理方法
-        top.process.on('uncaughtException', function(err) {
-            return true; //阻止 node-webkit 的错误界面
-        });
-        //全局错误处理结束
-    }
+    //全局错误处理开始
+    //浏览器全局错误处理方法
+    top.onerror = function(msg, url, line) {
+        var err = msg + '\r\n' + url + ':' + line;
+        if (!top.textor.debugMode) {
+            browser_console.error(err);
+        }
+        console.error(err);
+        return true;
+    };
+    //Node 全局错误处理方法
+    top.process.on('uncaughtException', function(err) {
+        return true; //阻止 node-webkit 的错误界面
+    });
+    //全局错误处理结束
 
     /**
      * 加载配置
@@ -138,7 +133,7 @@ define(function(require, exports, module) {
         splash: config.splash,
         preInit: function(done) {
             extMgr.load(function() {
-                extMgr.trigger('Init', app);
+                extMgr.call('Init', app);
                 done();
             });
         }
@@ -147,4 +142,10 @@ define(function(require, exports, module) {
     //显示 native window
     win.show();
     win.focus();
+    
+    //显示开发工具
+    key('ctrl+alt+shift+d', function(event) {
+        win.showDevTools();
+        return false;
+    });
 });

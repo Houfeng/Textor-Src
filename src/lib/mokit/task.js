@@ -1,1 +1,135 @@
-/*csd*/define(function(require,exports,module){"use strict";var a=require("class");var c=require("utils");var b=a.create({"taskList":[],"taskCount":0,"$init":function(d){var e=this;e.addMultiple(d);},"addMult":function(d){var e=this;c.each(d,function(g,f){e.addOne(g,f);});return e;},"addOne":function(e,d){var f=this;if(!e&&!d){return this;}if(e&&!d){d=e;e=f.taskList.length;}f.taskList.push({"name":e,"func":d});f.taskCount=f.taskList.length;f.result.length=f.taskCount;return f;},"add":function(d,e){var f=this;if(c.isString(d)||c.isFunction(d)){return f.addOne(d,e);}else{return f.addMult(d);}},"reset":function(){var d=this;d.taskCount=d.taskList.length;d.result.length=d.taskCount;d.executed=false;},"result":{},"executed":false,"execute":function(d,e){var f=this;if(f.taskCount<1&&d&&!f.executed){d(f.result);f.executed=true;return;}if(f.taskList&&f.taskList.length>0){var g=f.taskList.shift();if(c.isNull(g)||c.isNull(g.name)||c.isNull(g.func)){f.taskCount--;return;}g.func(function(h){f.result[g.name]=h;f.taskCount--;if(f.once){f.once(g.name,h);}if(f.taskCount<1&&d){d(f.result);f.executed=true;return;}if(!f.executed&&e){f.execute(d,e);}});if(!f.executed&&!e){f.execute(d,e);}}return f;},"one":function(d){this.once=d;return this;},"seq":function(d){return this.execute(d,true);},"end":function(d,e){return this.execute(d,e);}});exports.create=function(d){return new b(d);};});
+/**
+ * Task 模块，提供基础的任务功能;
+ * @class Task
+ * @static
+ * @module mokit
+ */
+define(function(require, exports, module) {
+    "require:nomunge,exports:nomunge,module:nomunge";
+    "use strict";
+
+    var $class = require("class");
+    var utils = require("utils");
+
+    var Task = $class.create({
+        "taskList": [],
+        "taskCount": 0,
+        "initialize": function(fns) {
+            var self = this;
+            self.addMult(fns);
+        },
+        "addMult": function(fns) {
+            var self = this;
+            utils.each(fns, function(key, fn) {
+                self.addOne(key, fn);
+            });
+            return self;
+        },
+        "addOne": function(name, fn) {
+            var self = this;
+            if (!name && !fn) return this;
+            if (name && !fn) {
+                fn = name;
+                name = self.taskList.length;
+            }
+            self.taskList.push({
+                "name": name,
+                "func": fn
+            });
+            self.taskCount = self.taskList.length;
+            self.result.length = self.taskCount;
+            return self;
+        },
+        /**
+         * 向当前对象添加任务 function
+         * @method add
+         * @param function 或 function 数组，function 可以接收一个 done 参数，用以通知当前任务完成
+         * @return {Task} 当前队列实例
+         * @static
+         */
+        "add": function(a, b) {
+            var self = this;
+            if (utils.isString(a) || utils.isFunction(a)) {
+                return self.addOne(a, b);
+            } else {
+                return self.addMult(a);
+            }
+        },
+        "reset": function() {
+            var self = this;
+            self.taskCount = self.taskList.length;
+            self.result.length = self.taskCount;
+            self.executed = false;
+        },
+        "result": {},
+        "executed": false,
+        "execute": function(done, isSeq) {
+            var self = this;
+            if (self.taskCount < 1 && done && !self.executed) {
+                done(self.result);
+                self.executed = true;
+                return;
+            }
+            if (self.taskList && self.taskList.length > 0) {
+                var task = self.taskList.shift();
+                if (utils.isNull(task) || utils.isNull(task.name) || utils.isNull(task.func)) {
+                    self.taskCount--;
+                    return;
+                };
+                task.func(function(rs) {
+                    self.result[task.name] = rs;
+                    self.taskCount--;
+                    if (self.once) self.once(task.name, rs);
+                    if (self.taskCount < 1 && done) {
+                        done(self.result);
+                        self.executed = true;
+                        return;
+                    }
+                    if (!self.executed && isSeq) {
+                        self.execute(done, isSeq);
+                    }
+                });
+                if (!self.executed && !isSeq) {
+                    self.execute(done, isSeq);
+                }
+            }
+            return self;
+        },
+        "one": function(done) {
+            this.once = done;
+            return this;
+        },
+        /**
+         * 顺序执行当前对列
+         * @method seq
+         * @param 完成时的回调
+         * @return {Task} 当前队列实例
+         * @static
+         */
+        "seq": function(done) {
+            return this.execute(done, true);
+        },
+        /**
+         * 并行执行当前对列
+         * @method end
+         * @param 完成时的回调
+         * @return {Task} 当前队列实例
+         * @static
+         */
+        "end": function(done, isSeq) {
+            return this.execute(done, isSeq);
+        }
+    });
+
+    /**
+     * 创建一个任务队列
+     * @method create
+     * @param 任务 function 或 function 数组，可以省略参数创建一个空队列，function 可以接收一个 done 参数，用以通知当前任务完成。
+     * @return {Task} 新队列实例
+     * @static
+     */
+    exports.create = function(tasks) {
+        return new Task(tasks);
+    };
+
+});

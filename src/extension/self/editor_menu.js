@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
     "require:nomunge,exports:nomunge,module:nomunge";
     var self = exports;
-    var gui = require('self/utils/menu');
 
     var context = null;
     var lang = null;
@@ -59,32 +58,35 @@ define(function(require, exports, module) {
     };
 
     self.onCreateContextMenu = function(contextMenu) {
-        //alert(contextMenu.editor);
-        contextMenu.editor.append(new gui.MenuItem({
+        //菜单类
+        var Menu = contextMenu.Menu;
+        var MenuItem = contextMenu.MenuItem;
+
+        contextMenu.editor.append(new MenuItem({
             label: lang.cut,
             click: function() {
                 var editor = context.getEditor();
                 if (editor) editor.cut();
             }
         }));
-        contextMenu.editor.append(new gui.MenuItem({
+        contextMenu.editor.append(new MenuItem({
             label: lang.copy,
             click: function() {
                 var editor = context.getEditor();
                 if (editor) editor.copy();
             }
         }));
-        contextMenu.editor.append(new gui.MenuItem({
+        contextMenu.editor.append(new MenuItem({
             label: lang.paste,
             click: function() {
                 var editor = context.getEditor();
                 if (editor) editor.paste();
             }
         }));
-        contextMenu.editor.append(new gui.MenuItem({
+        contextMenu.editor.append(new MenuItem({
             type: 'separator'
         }));
-        contextMenu.editor.append(new gui.MenuItem({
+        contextMenu.editor.append(new MenuItem({
             label: lang.select_all,
             click: function() {
                 var editor = context.getEditor();

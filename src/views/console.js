@@ -3,7 +3,7 @@ define(function(require, exports, module) {
 
     var app = require("mokit/app");
     var utils = require("mokit/utils");
-    var gui = require('self/utils/menu');
+    var gui = require_node('nw.gui');
     var lang = require('mokit/language').current();
     var console = require('self/models/console');
 
@@ -26,8 +26,8 @@ define(function(require, exports, module) {
         onRender: function(context) {
             var self = this;
             var console = self.model.console;
-            console.change.clear();
-            console.change(function() {
+            console.off('change');
+            console.on('change', function() {
                 self.render();
             });
             //向下滚动
